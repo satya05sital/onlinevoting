@@ -64,12 +64,14 @@ def admin():
     votes = db.session.query(Vote.candidate, db.func.count(Vote.candidate)).group_by(Vote.candidate).all()
     return render_template('admin.html', votes=votes)
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+from os import environ
+from flask import Flask
 
-    if __name__ == "__main__":
-    from os import environ
-    app.run(host="0.0.0.0", port=int(environ.get("PORT", 5000)))
+app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return "Hello, Flask is running!"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(environ.get("PORT", 5000)), debug=True)
